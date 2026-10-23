@@ -267,6 +267,15 @@
   }
   .bib .copy { position: absolute; top: 8px; right: 8px; }
 
+  .subhead {
+    font-family: var(--sans); font-weight: 600; font-size: 0.95rem;
+    color: var(--soft);
+    margin: 40px 0 16px;
+  }
+  .item.small { margin-bottom: 24px; }
+  .item.small h3 { font-size: 1.05rem; }
+  .item.small p { font-size: 0.95rem; }
+  .item.small .actions { margin-top: 8px; }
   .metrics { display: flex; flex-wrap: wrap; gap: 6px 20px; margin: 8px 0 0; padding: 0; list-style: none; font-size: 0.93rem; }
   .metrics b { font-weight: 600; font-variant-numeric: tabular-nums; }
 
@@ -384,8 +393,9 @@
       <div class="news-box" tabindex="0" aria-label="News, scrollable">
         <ul class="news">
           <li><time>2026</time><span>Applying to US CS PhD programs for Fall 2027.</span></li>
-          <li><time>2025</time><span>Paper on Arabic Braille interpretation published at <a href="https://doi.org/10.1109/ICCIT68739.2025.11491613">IEEE ICCIT 2025</a>.</span></li>
           <li><time>2025</time><span>Released an extended Arabic Braille dataset on <a href="https://www.kaggle.com/datasets/ashfaq099/arabic-braille-dataset-extended">Kaggle</a>.</span></li>
+          <li><time>2025</time><span>Paper on Arabic Braille interpretation published at <a href="https://doi.org/10.1109/ICCIT68739.2025.11491613">IEEE ICCIT 2025</a>.</span></li>
+          <li><time>2025</time><span>Graduated in Computer Science &amp; Engineering from KUET.</span></li>
         </ul>
       </div>
     </section>
@@ -444,6 +454,24 @@
         <div class="actions">
           <!-- TODO: point this at the project's own repository -->
           <a href="https://github.com/ashfaq099">Code</a>
+        </div>
+      </article>
+
+      <h4 class="subhead">Course projects</h4>
+
+      <article class="item small">
+        <h3>Mancala with an AI opponent</h3>
+        <p>A playable Mancala (Kalah) game in Python and Pygame. The computer player chooses moves with alpha-beta search over the game tree, including extra turns. A fuzzy-logic model estimates the human player's chance of winning as the game goes on, and a genetic algorithm suggests the human's best next move.</p>
+        <div class="actions">
+          <a href="https://github.com/ashfaq099/Mancala-Game">Code</a>
+        </div>
+      </article>
+
+      <article class="item small">
+        <h3>3D football stadium in OpenGL</h3>
+        <p>An interactive 3D stadium with a simple shooting game, written in C++ with OpenGL 3.3 and custom GLSL shaders. It implements Phong lighting with directional, point and spot lights, textured models, a hand-built sphere mesh for the ball, a free-moving camera, and collision detection with the goal.</p>
+        <div class="actions">
+          <a href="https://github.com/ashfaq099/Football-Stadium">Code</a>
         </div>
       </article>
     </section>
