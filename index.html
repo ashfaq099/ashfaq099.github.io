@@ -1,0 +1,554 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+  // Set the theme before the page paints, so there is no flash of the wrong colors.
+  (function () {
+    var t = null;
+    try { t = localStorage.getItem("theme"); } catch (e) {}
+    if (t !== "light" && t !== "dark") {
+      t = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+    }
+    document.documentElement.setAttribute("data-theme", t);
+  })();
+</script>
+<title>Md Ashfaqur Rahman</title>
+<meta name="description" content="Md Ashfaqur Rahman — computer vision and NLP researcher from KUET, Bangladesh. Applying to CS PhD programs for Fall 2027.">
+<meta property="og:title" content="Md Ashfaqur Rahman">
+<meta property="og:description" content="Computer vision and NLP. Applying to CS PhD programs for Fall 2027.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 36'%3E%3Crect width='24' height='36' rx='4' fill='%231F4E79'/%3E%3Ccircle cx='7' cy='8' r='3.2' fill='%23fff'/%3E%3Ccircle cx='7' cy='18' r='3.2' fill='%23fff'/%3E%3Ccircle cx='17' cy='18' r='3.2' fill='%23fff'/%3E%3Ccircle cx='17' cy='28' r='3.2' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500;6..72,600&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #FAFAF8;
+    --ink: #17191E;
+    --soft: #5E6470;
+    --rule: #E2E3DE;
+    --accent: #1F4E79;
+    --accent-wash: #E8EEF5;
+    --dot-off: #D5D9DF;
+    --serif: "Newsreader", Georgia, "Times New Roman", serif;
+    --sans: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #15171B;
+      --ink: #E8E9EC;
+      --soft: #9AA0AB;
+      --rule: #2A2D33;
+      --accent: #8DB6E2;
+      --accent-wash: #1D2633;
+      --dot-off: #33373F;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #15171B; --ink: #E8E9EC; --soft: #9AA0AB; --rule: #2A2D33;
+    --accent: #8DB6E2; --accent-wash: #1D2633; --dot-off: #33373F;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+  a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; }
+  a:hover { text-decoration-thickness: 2px; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+  @media (prefers-reduced-motion: no-preference) { html { scroll-behavior: smooth; } }
+  section { scroll-margin-top: 84px; }
+
+  /* Top navigation */
+  .topbar {
+    position: sticky; top: 0; z-index: 10;
+    background: var(--paper);
+    border-bottom: 1px solid var(--rule);
+  }
+  .topbar-inner {
+    max-width: 1040px; margin: 0 auto;
+    padding: 0 32px;
+    height: 60px;
+    display: flex; align-items: center; gap: 16px;
+  }
+  .brand {
+    font-family: var(--serif); font-size: 1.15rem; font-weight: 500;
+    color: var(--ink); text-decoration: none;
+    width: 260px; flex: none;
+    margin-right: 48px;
+  }
+  .nav {
+    display: flex; gap: 4px;
+    flex: 1; min-width: 0;
+    position: relative;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav a {
+    flex: none;
+    padding: 8px 10px;
+    border-radius: 4px;
+    color: var(--soft);
+    font-size: 0.92rem; font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .nav a:hover { color: var(--ink); background: var(--accent-wash); }
+  .nav a[aria-current="true"] { color: var(--accent); background: var(--accent-wash); }
+  .theme-toggle {
+    flex: none;
+    width: 38px; height: 38px;
+    display: grid; place-items: center;
+    border: 1px solid var(--rule); border-radius: 50%;
+    background: transparent; color: var(--ink);
+    cursor: pointer;
+  }
+  .theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+  .theme-toggle svg { width: 18px; height: 18px; }
+  .theme-toggle .sun { display: none; }
+  :root[data-theme="dark"] .theme-toggle .sun { display: block; }
+  :root[data-theme="dark"] .theme-toggle .moon { display: none; }
+
+  .page {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 48px 32px 40px;
+    display: grid;
+    grid-template-columns: 260px minmax(0, 1fr);
+    gap: 64px;
+  }
+
+  /* Sidebar */
+  .side { position: sticky; top: 108px; align-self: start; }
+  .portrait {
+    width: 168px; aspect-ratio: 4 / 5;
+    border-radius: 6px; overflow: hidden;
+    background: var(--accent-wash);
+    display: grid; place-items: center;
+    margin-bottom: 24px;
+  }
+  .portrait img { width: 100%; height: 100%; object-fit: cover; display: block; }
+  .portrait span { font-family: var(--serif); font-size: 2.6rem; color: var(--accent); }
+  .name {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 2.1rem;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    margin: 0 0 10px;
+  }
+  .braille {
+    display: flex; flex-wrap: nowrap; gap: 0;
+    font-size: 1.15rem; line-height: 1.2;
+    color: var(--accent);
+    margin: 0 0 14px;
+    cursor: help;
+  }
+  .braille span { display: inline-block; opacity: 0; animation: read 0.28s ease-out forwards; }
+  .braille .gap { width: 0.55em; }
+  @keyframes read { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
+  .role { color: var(--soft); font-size: 0.95rem; margin: 0 0 24px; }
+  .links { list-style: none; padding: 0; margin: 0; display: grid; gap: 6px; font-size: 0.95rem; }
+  .links a { text-decoration: none; }
+  .links a:hover { text-decoration: underline; }
+  .links .cv a {
+    display: inline-block;
+    padding: 6px 14px; margin-bottom: 6px;
+    border: 1px solid var(--accent); border-radius: 4px;
+    font-weight: 500;
+  }
+  .links .cv a:hover { background: var(--accent); color: var(--paper); text-decoration: none; }
+
+  /* Main */
+  main { max-width: 660px; }
+  section { margin: 0 0 52px; }
+  h2 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 1.45rem;
+    margin: 0 0 18px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--rule);
+  }
+  h3 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 1.15rem;
+    line-height: 1.35;
+    margin: 0 0 6px;
+  }
+  p { margin: 0 0 14px; }
+  .lede { font-family: var(--serif); font-size: 1.2rem; line-height: 1.55; }
+  .status {
+    background: var(--accent-wash);
+    border-left: 3px solid var(--accent);
+    padding: 12px 16px; border-radius: 0 4px 4px 0;
+    font-size: 0.97rem;
+  }
+
+  .interests { list-style: none; padding: 0; margin: 0; display: grid; gap: 16px; }
+  .interests strong { display: block; font-weight: 600; }
+  .interests span { color: var(--soft); }
+
+  .news-box {
+    max-height: 16rem;
+    overflow-y: auto;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    padding: 6px 16px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--dot-off) transparent;
+  }
+  .news { list-style: none; padding: 0; margin: 0; }
+  .news li { display: grid; grid-template-columns: 88px 1fr; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--rule); }
+  .news li:last-child { border-bottom: 0; }
+  .news time { color: var(--soft); font-variant-numeric: tabular-nums; font-size: 0.93rem; padding-top: 1px; }
+
+  .item { margin-bottom: 32px; }
+  .item:last-child { margin-bottom: 0; }
+  .authors { margin: 0 0 2px; }
+  .authors b { font-weight: 600; }
+  .venue { color: var(--soft); font-style: italic; margin: 0 0 12px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0 0; }
+  .actions a, .actions button {
+    font: 500 0.85rem/1 var(--sans);
+    color: var(--accent);
+    background: transparent;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 7px 11px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  .actions a:hover, .actions button:hover { border-color: var(--accent); }
+  .actions button[aria-expanded="true"] { background: var(--accent-wash); border-color: var(--accent); }
+
+  .pipeline {
+    list-style: none; padding: 0; margin: 4px 0 14px;
+    display: flex; flex-wrap: wrap; gap: 6px;
+    counter-reset: step;
+    font-size: 0.85rem;
+  }
+  .pipeline li {
+    counter-increment: step;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 5px 9px 5px 7px;
+    background: var(--paper);
+  }
+  .pipeline li::before {
+    content: counter(step);
+    display: inline-grid; place-items: center;
+    width: 18px; height: 18px; margin-right: 6px;
+    border-radius: 50%;
+    background: var(--accent-wash); color: var(--accent);
+    font-size: 0.72rem; font-weight: 600;
+  }
+
+  .bib { margin-top: 12px; position: relative; }
+  .bib pre {
+    margin: 0;
+    padding: 14px 16px;
+    background: var(--accent-wash);
+    border-radius: 4px;
+    font-size: 0.8rem; line-height: 1.5;
+    overflow-x: auto;
+    white-space: pre;
+  }
+  .bib .copy { position: absolute; top: 8px; right: 8px; }
+
+  .metrics { display: flex; flex-wrap: wrap; gap: 6px 20px; margin: 8px 0 0; padding: 0; list-style: none; font-size: 0.93rem; }
+  .metrics b { font-weight: 600; font-variant-numeric: tabular-nums; }
+
+  .edu .where { color: var(--soft); margin: 0 0 8px; }
+
+  footer {
+    grid-column: 2;
+    color: var(--soft); font-size: 0.85rem;
+    border-top: 1px solid var(--rule);
+    padding-top: 16px;
+    max-width: 660px;
+  }
+
+  @media (max-width: 820px) {
+    .topbar-inner { padding: 0 8px 0 16px; height: 56px; gap: 8px; }
+    .brand { display: none; }
+    .nav a { padding: 8px 8px; }
+    section { scroll-margin-top: 72px; }
+    .page { grid-template-columns: 1fr; gap: 36px; padding: 32px 16px 32px; }
+    .side { position: static; }
+    .portrait { width: 120px; }
+    .links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .links .cv { grid-column: 1 / -1; }
+    footer { grid-column: 1; }
+    .news li { grid-template-columns: 72px 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .braille span { animation: none; opacity: 1; }
+  }
+  @media print {
+    .topbar { display: none; }
+    .news-box { max-height: none; overflow: visible; border: 0; padding: 0; }
+    .side { position: static; }
+    .actions, .braille { display: none; }
+  }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="#about">Md Ashfaqur Rahman</a>
+    <nav class="nav" aria-label="Page sections">
+      <a href="#about">About</a>
+      <a href="#interests">Research Interests</a>
+      <a href="#news">News</a>
+      <a href="#publications">Publications</a>
+      <a href="#projects">Projects</a>
+      <a href="#education">Education</a>
+    </nav>
+    <button class="theme-toggle" type="button" aria-label="Switch to dark mode">
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M2.5 12h2.2M19.3 12h2.2M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="page">
+
+  <!-- ===================== SIDEBAR ===================== -->
+  <aside class="side">
+    <div class="portrait">
+      <!-- Put a square-ish headshot at assets/photo.jpg. If it is missing, initials show instead. -->
+      <img src="assets/photo.jpg" alt="Portrait of Md Ashfaqur Rahman" onerror="this.remove()">
+      <span aria-hidden="true">AR</span>
+    </div>
+
+    <h1 class="name">Md Ashfaqur Rahman</h1>
+    <p class="braille" id="braille" title="“Ashfaqur Rahman” in Grade 1 Braille" aria-hidden="true"></p>
+    <p class="role">CS graduate, KUET<br>Computer vision &amp; NLP</p>
+
+    <ul class="links">
+      <li class="cv"><a href="cv.pdf">Download CV</a></li>
+      <!-- TODO: replace with your real email -->
+      <li><a href="mailto:your.email@example.com">Email</a></li>
+      <li><a href="https://scholar.google.com/citations?user=MUAklegAAAAJ">Google Scholar</a></li>
+      <li><a href="https://github.com/ashfaq099">GitHub</a></li>
+      <li><a href="https://www.linkedin.com/in/ashfaqur-rahman-3536b31b7">LinkedIn</a></li>
+      <li><a href="https://www.researchgate.net/profile/Ashfaqur-Rahman-10">ResearchGate</a></li>
+    </ul>
+  </aside>
+
+  <!-- ===================== MAIN ===================== -->
+  <main>
+
+    <section id="about">
+      <p class="lede">I build systems that read: models that look at an image, recognize the symbols in it, and turn them into correct language.</p>
+      <p>I graduated in Computer Science and Engineering from Khulna University of Engineering &amp; Technology (KUET), Bangladesh. My undergraduate thesis was a system that reads Arabic Braille from photographs and converts it back into Arabic text, published at IEEE ICCIT 2025.</p>
+      <p>The thesis taught me where these systems actually break. The recognizer reached 96% accuracy per character, yet whole sentences still came out wrong. A single misread cell could derail an entire word, and rebuilding valid Arabic from a correct stream of characters, with its diacritics, ligatures and word boundaries, was a hard problem on its own. Getting perception right is not the same as getting language right, and that gap is what I want to work on.</p>
+      <p class="status">I am applying to CS PhD programs for <strong>Fall 2027</strong>. If you are recruiting in vision, NLP, or vision&ndash;language research, I would be glad to hear from you.</p>
+    </section>
+
+    <section id="interests">
+      <h2>Research interests</h2>
+      <ul class="interests">
+        <li>
+          <strong>From perception to language</strong>
+          <span>How small recognition errors in vision&ndash;language pipelines grow into wrong text, and how models can detect and recover from them instead of passing them along.</span>
+        </li>
+        <li>
+          <strong>Reliable generation in low-resource languages</strong>
+          <span>Evaluating and improving language models for languages like Bangla and Arabic, where benchmarks are thin and unfaithful output is hard to catch.</span>
+        </li>
+        <li>
+          <strong>Efficient adaptation for specialized domains</strong>
+          <span>Fine-tuning small models with parameter-efficient methods for fields such as clinical text, where data and compute are limited.</span>
+        </li>
+      </ul>
+    </section>
+
+    <section id="news">
+      <h2>News</h2>
+      <!-- Newest first. Add a month once you know it, e.g. "Dec 2025".
+           The box scrolls on its own once the list is taller than about six items. -->
+      <div class="news-box" tabindex="0" aria-label="News, scrollable">
+        <ul class="news">
+          <li><time>2026</time><span>Applying to US CS PhD programs for Fall 2027.</span></li>
+          <li><time>2025</time><span>Paper on Arabic Braille interpretation published at <a href="https://doi.org/10.1109/ICCIT68739.2025.11491613">IEEE ICCIT 2025</a>.</span></li>
+          <li><time>2025</time><span>Released an extended Arabic Braille dataset on <a href="https://www.kaggle.com/datasets/ashfaq099/arabic-braille-dataset-extended">Kaggle</a>.</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="publications">
+      <h2>Publications</h2>
+
+      <article class="item">
+        <h3>A Comprehensive System for Arabic Braille Interpretation</h3>
+        <p class="authors"><b>Md Ashfaqur Rahman</b>, Muhammad Sheikh Sadi</p>
+        <p class="venue">International Conference on Computer and Information Technology (ICCIT), IEEE, 2025, pp. 2992&ndash;2997</p>
+
+        <ol class="pipeline" aria-label="System pipeline">
+          <li>Braille image</li>
+          <li>Cell detection (YOLOv8)</li>
+          <li>Character classification (CNN)</li>
+          <li>Language-aware post-processing</li>
+          <li>Arabic text</li>
+        </ol>
+
+        <p>A two-stage optical Braille recognition system for Arabic. We extended the existing dataset to cover under-represented characters, diacritics and ligatures, tuned a custom CNN classifier, and added a post-processing stage that rebuilds Arabic words from the recognized cells. The classifier reaches 96% per-character accuracy.</p>
+
+        <div class="actions">
+          <a href="https://doi.org/10.1109/ICCIT68739.2025.11491613">Paper</a>
+          <a href="https://github.com/ashfaq099/Arabraille">Code</a>
+          <a href="https://www.kaggle.com/datasets/ashfaq099/arabic-braille-dataset-extended">Dataset</a>
+          <button type="button" aria-expanded="false" aria-controls="bib-iccit" data-bib>BibTeX</button>
+        </div>
+        <div class="bib" id="bib-iccit" hidden>
+<pre>@inproceedings{rahman2025arabicbraille,
+  title     = {A Comprehensive System for Arabic Braille Interpretation},
+  author    = {Rahman, Md Ashfaqur and Sadi, Muhammad Sheikh},
+  booktitle = {International Conference on Computer and
+               Information Technology (ICCIT)},
+  pages     = {2992--2997},
+  year      = {2025},
+  publisher = {IEEE},
+  doi       = {10.1109/ICCIT68739.2025.11491613}
+}</pre>
+          <div class="actions copy"><button type="button" data-copy="bib-iccit">Copy</button></div>
+        </div>
+      </article>
+    </section>
+
+    <section id="projects">
+      <h2>Projects</h2>
+
+      <article class="item">
+        <h3>Doctor&ndash;patient dialogue to SOAP notes</h3>
+        <p>Fine-tuned Flan-T5-base with LoRA to turn medical conversations into structured clinical notes (Subjective, Objective, Assessment, Plan). Only 0.71% of the model's parameters were trained, and the full run took about 45 minutes on a single T4 GPU, using 10,000 dialogue&ndash;note pairs.</p>
+        <ul class="metrics">
+          <li>ROUGE-1 <b>0.503</b></li>
+          <li>ROUGE-L <b>0.369</b></li>
+          <li>BERTScore F1 <b>0.886</b></li>
+        </ul>
+        <div class="actions">
+          <!-- TODO: point this at the project's own repository -->
+          <a href="https://github.com/ashfaq099">Code</a>
+        </div>
+      </article>
+    </section>
+
+    <section id="education" class="edu">
+      <h2>Education</h2>
+      <article class="item">
+        <h3>B.Sc. in Computer Science and Engineering</h3>
+        <!-- TODO: add your years, e.g. "2020 – 2025" -->
+        <p class="where">Khulna University of Engineering &amp; Technology (KUET), Bangladesh</p>
+        <!-- TODO: add "Supervisor: ..." if you want it shown -->
+        <p>Thesis: <em>Bridging the Accessibility Gap: A Comprehensive System for Arabic Braille Interpretation</em></p>
+      </article>
+    </section>
+
+  </main>
+
+  <footer>Last updated October 2026</footer>
+</div>
+
+<script>
+  // Grade 1 Braille for "Ashfaqur Rahman" (⠠ = capital sign)
+  (function () {
+    var cells = "⠠⠁⠎⠓⠋⠁⠟⠥⠗ ⠠⠗⠁⠓⠍⠁⠝";
+    var el = document.getElementById("braille");
+    var i = 0;
+    Array.from(cells).forEach(function (c) {
+      var s = document.createElement("span");
+      if (c === " ") { s.className = "gap"; } else { s.textContent = c; }
+      s.style.animationDelay = (0.25 + i * 0.06) + "s";
+      el.appendChild(s);
+      i++;
+    });
+  })();
+
+  // Light / dark toggle
+  (function () {
+    var root = document.documentElement;
+    var btn = document.querySelector(".theme-toggle");
+    function label() {
+      var dark = root.getAttribute("data-theme") === "dark";
+      btn.setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
+    }
+    label();
+    btn.addEventListener("click", function () {
+      var next = root.getAttribute("data-theme") === "dark" ? "light" : "dark";
+      root.setAttribute("data-theme", next);
+      try { localStorage.setItem("theme", next); } catch (e) {}
+      label();
+    });
+  })();
+
+  // Highlight the nav link for the section currently on screen
+  (function () {
+    var links = Array.from(document.querySelectorAll(".nav a"));
+    var byId = {};
+    links.forEach(function (a) { byId[a.getAttribute("href").slice(1)] = a; });
+    function setActive(id) {
+      links.forEach(function (a) { a.removeAttribute("aria-current"); });
+      if (byId[id]) {
+        byId[id].setAttribute("aria-current", "true");
+        // On narrow screens, slide the nav sideways so the active link stays visible
+        var nav = byId[id].parentNode, a = byId[id];
+        if (a.offsetLeft < nav.scrollLeft || a.offsetLeft + a.offsetWidth > nav.scrollLeft + nav.clientWidth) {
+          nav.scrollLeft = a.offsetLeft - 8;
+        }
+      }
+    }
+    var sections = Object.keys(byId).map(function (id) { return document.getElementById(id); }).filter(Boolean);
+    var current = null, queued = false;
+    function update() {
+      queued = false;
+      var id = sections[0].id;
+      var atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+      if (atBottom) {
+        id = sections[sections.length - 1].id;
+      } else {
+        sections.forEach(function (s) { if (s.getBoundingClientRect().top <= 120) id = s.id; });
+      }
+      if (id !== current) { current = id; setActive(id); }
+    }
+    window.addEventListener("scroll", function () {
+      if (!queued) { queued = true; requestAnimationFrame(update); }
+    }, { passive: true });
+    update();
+  })();
+
+  // BibTeX toggle and copy
+  document.querySelectorAll("[data-bib]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var box = document.getElementById(btn.getAttribute("aria-controls"));
+      var open = btn.getAttribute("aria-expanded") === "true";
+      btn.setAttribute("aria-expanded", String(!open));
+      box.hidden = open;
+    });
+  });
+  document.querySelectorAll("[data-copy]").forEach(function (btn) {
+    btn.addEventListener("click", function () {
+      var text = document.querySelector("#" + btn.dataset.copy + " pre").textContent;
+      var done = function () { btn.textContent = "Copied"; setTimeout(function () { btn.textContent = "Copy"; }, 1500); };
+      if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(done, function () { btn.textContent = "Select and copy"; });
+      }
+    });
+  });
+</script>
+</body>
+</html>
